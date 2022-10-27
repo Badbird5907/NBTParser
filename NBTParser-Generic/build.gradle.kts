@@ -18,11 +18,13 @@ dependencies {
 }
 
 tasks {
-    jar {
-        archiveClassifier.set("sources")
-    }
     shadowJar {
         archiveBaseName.set("NBTParser-Generic")
+        archiveClassifier.set("")
+    }
+    jar {
+        archiveClassifier.set("sources")
+        dependsOn("shadowJar")
     }
 }
 

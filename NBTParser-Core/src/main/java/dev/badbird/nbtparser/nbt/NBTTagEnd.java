@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class NBTTagEnd extends NBTBase {
 

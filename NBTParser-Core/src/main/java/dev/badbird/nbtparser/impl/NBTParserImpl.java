@@ -2,6 +2,7 @@ package dev.badbird.nbtparser.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import dev.badbird.nbtparser.NBTParser;
 import dev.badbird.nbtparser.Platform;
 import dev.badbird.nbtparser.nbt.NBTBase;
@@ -14,7 +15,6 @@ public class NBTParserImpl implements NBTParser {
 
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(NBTBase.class, new NBTBaseSerializer())
             .create();
 
     public NBTParserImpl(Platform platform) {
@@ -23,7 +23,7 @@ public class NBTParserImpl implements NBTParser {
 
     @Override
     public String toJson(NBTTagCompound compound) {
-        return GSON.toJson(compound);
+        return GSON.toJson(compound.asJsonElement());
     }
 
     @Override

@@ -21,6 +21,8 @@ tasks {
     shadowJar {
         archiveBaseName.set("NBTParser-Generic")
         archiveClassifier.set("")
+
+        relocate("com.google.gson", "dev.badbird.nbtparser.relocate.gson")
     }
     jar {
         archiveClassifier.set("sources")

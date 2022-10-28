@@ -18,3 +18,8 @@ public class Hello {
     }
 }
 ```
+
+### Why?
+Because [Dufji](https://github.com/Dufji) is dumb and kept asking me to spoonfeed him on parsing NBTTagCompond to JSON for over a week
+
+So i made this to spoonfeed him lol

@@ -58,7 +58,7 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
 
     private static final List<Class<?>> WHITELIST = Arrays.asList(
             byte.class, short.class, int.class, long.class, float.class, double.class,
-            byte[].class, String.class, List.class, int[].class, long[].class
+            byte[].class, String.class, List.class, int[].class, long[].class, Map.class
     );
 
     public NBTBase fromMCBase(Object nbt) {
@@ -90,6 +90,8 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
                         return createIntArrayFromMC(nbt);
                     } else if (value instanceof long[]) {
                         return createLongArrayFromMC(nbt);
+                    } else if (value instanceof Map) {
+                        return createCompoundFromMC(nbt);
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

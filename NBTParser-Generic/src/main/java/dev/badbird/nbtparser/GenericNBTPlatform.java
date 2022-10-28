@@ -4,6 +4,7 @@ import dev.badbird.nbtparser.nbt.*;
 import dev.badbird.nbtparser.utils.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 @SuppressWarnings("ALL")
@@ -41,7 +42,7 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
     }
 
     public NBTTagList createListFromMC(Object nbt) {
-        return new NBTTagList(ReflectionUtils.getField(nbt, java.util.List.class));
+        return new NBTTagList(ReflectionUtils.getField(nbt, List.class));
     }
 
     public NBTTagIntArray createIntArrayFromMC(Object nbt) {
@@ -63,12 +64,21 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
 
     public NBTBase fromMCBase(Object nbt) {
         // Loop through all the fields in the NBTBase class and get the first one that is in the whitelist
-        for (Field declaredField : nbt.getClass().getDeclaredFields()) {
-            if (WHITELIST.contains(declaredField.getType())) {
+        List<Field> fields = Arrays.asList(nbt.getClass().getDeclaredFields());
+        for (Field declaredField : fields) {
+            if (WHITELIST.contains(declaredField.getType()) && !Modifier.isStatic(declaredField.getModifiers())) {
                 declaredField.setAccessible(true);
                 try {
                     Object value = declaredField.get(nbt);
-                    if (value instanceof Byte) {
+                    if (value instanceof List) {
+                        return createListFromMC(nbt);
+                    } else if (value instanceof Byte) {
+                        if (fields.stream().filter(field ->
+                                !Modifier.isStatic(field.getModifiers()) // We want fields that are not static
+                                        && field.getType().equals(List.class) // We want fields that are a list
+                        ).findFirst().isPresent()) {
+                            return createListFromMC(nbt); // NBTTagList also has a byte field, so we need to check if it has a list field
+                        }
                         return createByteFromMC(nbt);
                     } else if (value instanceof Short) {
                         return createShortFromMC(nbt);
@@ -84,8 +94,6 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
                         return createByteArrayFromMC(nbt);
                     } else if (value instanceof String) {
                         return createStringFromMC(nbt);
-                    } else if (value instanceof List) {
-                        return createListFromMC(nbt);
                     } else if (value instanceof int[]) {
                         return createIntArrayFromMC(nbt);
                     } else if (value instanceof long[]) {
@@ -102,11 +110,12 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
     }
 
     public NBTTagCompound createCompoundFromMC(Object nbt) {
-        Map map = ReflectionUtils.getField(nbt, Map.class);
+        Map map = ReflectionUtils.getField(nbt, Map.class); // Map<String, NBTBase>
         Map<String, NBTBase> newMap = new HashMap<>();
         for (Object o : map.entrySet()) {
             Map.Entry entry = (Map.Entry) o;
-            newMap.put((String) entry.getKey(), fromMCBase(entry.getValue()));
+            Object value = entry.getValue();
+            newMap.put((String) entry.getKey(), fromMCBase(value));
         }
         return new NBTTagCompound(newMap);
     }

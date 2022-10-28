@@ -71,7 +71,7 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
                 declaredField.setAccessible(true);
                 if (Objects.equals(type, List.class)) {
                     return createListFromMC(nbt);
-                } else if (Objects.equals(type, Byte.class)) {
+                } else if (Objects.equals(type, Byte.class) || Objects.equals(type, byte.class)) {
                     if (fields.stream().filter(field ->
                             !Modifier.isStatic(field.getModifiers()) // We want fields that are not static
                                     && field.getType().equals(List.class) // We want fields that are a list
@@ -79,23 +79,23 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
                         return createListFromMC(nbt); // NBTTagList also has a byte field, so we need to check if it has a list field
                     }
                     return createByteFromMC(nbt);
-                } else if (Objects.equals(type, Short.class)) {
+                } else if (Objects.equals(type, Short.class) || Objects.equals(type, short.class)) {
                     return createShortFromMC(nbt);
-                } else if (Objects.equals(type, Integer.class)) {
+                } else if (Objects.equals(type, Integer.class) || Objects.equals(type, int.class)) {
                     return createIntFromMC(nbt);
-                } else if (Objects.equals(type, Long.class)) {
+                } else if (Objects.equals(type, Long.class) || Objects.equals(type, long.class)) {
                     return createLongFromMC(nbt);
-                } else if (Objects.equals(type, Float.class)) {
+                } else if (Objects.equals(type, Float.class) || Objects.equals(type, float.class)) {
                     return createFloatFromMC(nbt);
-                } else if (Objects.equals(type, Double.class)) {
+                } else if (Objects.equals(type, Double.class) || Objects.equals(type, double.class)) {
                     return createDoubleFromMC(nbt);
-                } else if (Objects.equals(type, byte[].class)) {
+                } else if (Objects.equals(type, Byte[].class) || Objects.equals(type, byte[].class)) {
                     return createByteArrayFromMC(nbt);
                 } else if (Objects.equals(type, String.class)) {
                     return createStringFromMC(nbt);
-                } else if (Objects.equals(type, int[].class)) {
+                } else if (Objects.equals(type, Integer[].class) || Objects.equals(type, int[].class)) {
                     return createIntArrayFromMC(nbt);
-                } else if (Objects.equals(type, long[].class)) {
+                } else if (Objects.equals(type, Long[].class) || Objects.equals(type, long[].class)) {
                     return createLongArrayFromMC(nbt);
                 } else if (Objects.equals(type, Map.class)) {
                     return createCompoundFromMC(nbt);

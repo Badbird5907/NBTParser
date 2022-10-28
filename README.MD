@@ -22,4 +22,8 @@ public class Hello {
 ### Why?
 Because [Dufji](https://github.com/Dufji) is dumb and kept asking me to spoonfeed him on parsing NBTTagCompond to JSON for over a week
 
-So i made this to spoonfeed him lol
+So i made this to spoonfeed him lol, but in the process made it really complicated because:
+
+*why the fuck not?*
+
+After all, ***we're programmers, we overcomplicate things just because we __can__***

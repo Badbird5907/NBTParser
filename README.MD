@@ -12,7 +12,7 @@ public class Hello {
         GenericNBTPlatform platform = new GenericNBTPlatform();
         NBTParser parser = new NBTParserImpl(platform); // NBTParserImpl is the default implementation of NBTParser
 
-        dev.badbird.nbtparser.nbt.NBTTagCompound compound = platform.createCompoundFromMC(itemTags); // Create a NBTParser NBTTagCompound from a Minecraft NBTTagCompound
+        dev.badbird.nbtparser.nbt.NBTTagCompound compound = platform.createCompoundFromMC(nbt); // Create a NBTParser NBTTagCompound from a Minecraft NBTTagCompound
         String json = parser.toJson(compound); // Serialize the NBTParser NBTTagCompound into JSON
         return json;
     }

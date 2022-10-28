@@ -42,7 +42,12 @@ public class GenericNBTPlatform implements Platform { // Super generic because o
     }
 
     public NBTTagList createListFromMC(Object nbt) {
-        return new NBTTagList(ReflectionUtils.getField(nbt, List.class));
+        List list = ReflectionUtils.getField(nbt, List.class);
+        List<NBTBase> newList = new ArrayList<>();
+        for (Object o : list) {
+            newList.add(fromMCBase(o));
+        }
+        return new NBTTagList(newList);
     }
 
     public NBTTagIntArray createIntArrayFromMC(Object nbt) {
